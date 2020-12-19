@@ -1,0 +1,12 @@
+# ...
+schema:
+  schema_id: hello
+  name: 大家好
+  version: "2"
+
+engine:
+  processors:
+    - fluid_editor
+  segmentors:
+    - fallback_segmentor
+
