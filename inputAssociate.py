@@ -5,7 +5,7 @@ import sqlite3
 import datetime
 
 def read_words():
-    inputs = open('s_word.txt', 'r')
+    inputs = open('s_word.txt', 'r', encoding='utf-8')
     wordList = []
     for line in inputs:
        values = line.strip('\n').split('	')
@@ -36,7 +36,7 @@ def create_associatedb():
         insert_sql = get_insert_sql(word, count)
         cursor.execute(insert_sql)
         # if int(count) >= 1:
-           
+
 
     # cursor.execute('CREATE INDEX word_index ON assoicate(word)')
     cursor.close()
@@ -58,7 +58,7 @@ def insert_app_word():
         insert_sql = get_insert_sql(word, count)
         cursor.execute(insert_sql)
         # if int(count) >= 1:
-           
+
 
     # cursor.execute('CREATE INDEX word_index ON assoicate(word)')
     cursor.close()
