@@ -8,12 +8,14 @@ def parase_city_word():
         for city in temp:
             for area in city["children"]:
                 if "children" in area:
+                    pre_area = "%s%s" % (city["name"], area["name"])
+                    word_list.append([pre_area, "1000"])
                     for sub_area in area["children"]:
-                        data = "%s%s%s" % (city["name"], area["name"], sub_area["name"])
-                        word_list.append([data, 1000])
+                        suf_area = "%s%s" % (area["name"], sub_area["name"])
+                        word_list.append([suf_area,'1000'])
                 else:
                     data = "%s%s" % (city["name"], area["name"])
-                    word_list.append([data, 1000])
+                    word_list.append([data, "1000"])
     print(word_list)
     return word_list
 

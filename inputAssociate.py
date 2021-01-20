@@ -13,8 +13,8 @@ def read_words():
            wordList.append(values)
     return wordList
 
-def get_insert_sql(word, count):
-    return "insert into assoicate (word, count) values('%s','%s')" % (word, count)
+def get_insert_sql(word, count, preword):
+    return "insert into assoicate (word, count, prename) values('%s','%s','%s')" % (word, count, preword)
 
 def get_select_sql(word):
     sql = "select * from assoicate where word like '%{name}_%' and count > 100 order by count desc".format(name=word)
@@ -26,44 +26,53 @@ def create_associatedb():
     cursor = conn.cursor()
     create_sql = '''create table IF NOT EXISTS assoicate(id INTEGER PRIMARY KEY,
     word TEXT NOT NULL,
-    count INT
+    count INT,
+    prename VARCHAR(1)
     )
     '''
     cursor.execute(create_sql)
     for word_map in read_words():
         word = word_map[0]
-        count = word_map[1]
-        insert_sql = get_insert_sql(word, count)
-        cursor.execute(insert_sql)
+        count = word_map[2]
+        preword = word[0]
+        # print(preword)
+        insert_sql = get_insert_sql(word, count, preword)
+        # print(insert_sql)
+        if count.isdigit() and int(count) > 500:
+            cursor.execute(insert_sql)
         # if int(count) >= 1:
 
 
-    # cursor.execute('CREATE INDEX word_index ON assoicate(word)')
+    cursor.execute('CREATE INDEX index_name ON assoicate(prename)')
+    cursor.execute('CREATE INDEX index_count ON assoicate(count)')
     cursor.close()
     conn.commit()
     conn.close()
 
-def insert_app_word():
-    conn = sqlite3.connect('input_word.db')
-    cursor = conn.cursor()
-    create_sql = '''create table IF NOT EXISTS assoicate(id INTEGER PRIMARY KEY,
-    word TEXT NOT NULL,
-    count INT
-    )
-    '''
-    cursor.execute(create_sql)
-    for word_map in read_words():
-        word = word_map[0]
-        count = word_map[1]
-        insert_sql = get_insert_sql(word, count)
-        cursor.execute(insert_sql)
-        # if int(count) >= 1:
+# def insert_app_word():
+#     conn = sqlite3.connect('input_word.db')
+#     cursor = conn.cursor()
+#     create_sql = '''create table IF NOT EXISTS assoicate(id INTEGER PRIMARY KEY,
+#     word TEXT NOT NULL UNIQUE,
+#     count INT
+#     )
+#     '''
+#     cursor.execute(create_sql)
+#     for word_map in read_words():
+#         word = word_map[0]
+#         count = word_map[2]
+#         insert_sql = get_insert_sql(word, count)
+#         # print(insert_sql)
+
+#         cursor.execute(insert_sql)
+#         # if int(count) >= 1:
 
 
-    # cursor.execute('CREATE INDEX word_index ON assoicate(word)')
-    cursor.close()
-    conn.commit()
-    conn.close()
+#     # cursor.execute('CREATE INDEX index_word ON assoicate(word)')
+#     cursor.execute('CREATE INDEX index_count ON assoicate(count)')
+#     cursor.close()
+#     conn.commit()
+#     conn.close()
 
 def get_jieba_split_word(word):
     input_words = jieba.cut(word)
