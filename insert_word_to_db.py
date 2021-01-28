@@ -110,8 +110,8 @@ class associate_manager(object):
 if __name__ == "__main__":
     # db = db_manager()
     assoicate = associate_manager()
-    # assoicate.create_associate_db()
-    assoicate.insert_city_word_to_file()
+    assoicate.create_associate_db()
+    # assoicate.insert_city_word_to_file()
 
     # words = parse_city.parase_city_word()
     # db.insert_associate_word(words)
